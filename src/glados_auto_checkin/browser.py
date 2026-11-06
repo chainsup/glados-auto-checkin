@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import json
 import logging
 import math
@@ -445,7 +446,7 @@ def perform_browser_checkin(config: AppConfig, *, status_only: bool, headed: boo
             result["status_after"] = status_before
             return result
 
-        button = page.get_by_role("button", name="签到")
+        button = page.get_by_role("button", name=re.compile(r"签到|check\s*-?\s*in", re.I))
         if button.count() == 0:
             raise BrowserFlowError(
                 "Could not find the sign-in button on the check-in page.",
